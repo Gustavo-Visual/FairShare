@@ -336,17 +336,26 @@ export default function App() {
                                         className={`w-full px-4 py-2 rounded-lg border ${inputBgClass} focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none mb-4`}
                                         placeholder="Enter your custom greeting..."
                                     />
-                                    <div className="flex gap-2 justify-end">
-                                        <Button variant="secondary" onClick={() => setShowGreetingEditor(false)} darkMode={darkMode}>
-                                            Cancel
+                                    <div className="flex gap-2 justify-between">
+                                        <Button
+                                            variant="ghost"
+                                            onClick={() => setTempGreeting("Hello there. Let's split those group expenses.")}
+                                            darkMode={darkMode}
+                                        >
+                                            Reset to Default
                                         </Button>
-                                        <Button onClick={() => {
-                                            setCustomGreeting(tempGreeting || "Hello there. Let's split those group expenses.");
-                                            setTypedText('');
-                                            setShowGreetingEditor(false);
-                                        }}>
-                                            Save
-                                        </Button>
+                                        <div className="flex gap-2">
+                                            <Button variant="secondary" onClick={() => setShowGreetingEditor(false)} darkMode={darkMode}>
+                                                Cancel
+                                            </Button>
+                                            <Button onClick={() => {
+                                                setCustomGreeting(tempGreeting || "Hello there. Let's split those group expenses.");
+                                                setTypedText('');
+                                                setShowGreetingEditor(false);
+                                            }}>
+                                                Save
+                                            </Button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
