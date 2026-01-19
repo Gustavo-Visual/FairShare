@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Plus, Trash2, DollarSign, Users, Receipt, PiggyBank, RotateCcw, X, Settings, Moon, Sun, Share2, Calendar, Download } from 'lucide-react';
+import { Plus, Trash2, DollarSign, Users, Receipt, PiggyBank, RotateCcw, X, Settings, Moon, Sun, Share2, Calendar, Download, Edit3 } from 'lucide-react';
 
 const CURRENCIES = {
     EUR: { symbol: '€', name: 'Euro' },
@@ -76,7 +76,19 @@ export default function App() {
     });
     const [showShareMenu, setShowShareMenu] = useState(false);
     const [typedText, setTypedText] = useState('');
-    const fullGreeting = "Hello Dr. Gustavo Carita. Let's split those group expenses.";
+    const [showGreetingEditor, setShowGreetingEditor] = useState(false);
+    const [customGreeting, setCustomGreeting] = useState(() => {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const data = JSON.parse(saved);
+                return data.greeting || "Hello there. Let's split those group expenses.";
+            }
+        } catch (e) { }
+        return "Hello there. Let's split those group expenses.";
+    });
+    const [tempGreeting, setTempGreeting] = useState('');
+    const fullGreeting = customGreeting;
 
     // Expense Form State
     const [payer, setPayer] = useState('');
@@ -105,11 +117,11 @@ export default function App() {
     // Save data to localStorage whenever it changes
     useEffect(() => {
         try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify({ participants, expenses, currency, darkMode }));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ participants, expenses, currency, darkMode, greeting: customGreeting }));
         } catch (e) {
             console.error('Failed to save data:', e);
         }
-    }, [participants, expenses, currency, darkMode]);
+    }, [participants, expenses, currency, darkMode, customGreeting]);
 
     // Typewriter animation effect
     useEffect(() => {
@@ -292,12 +304,53 @@ export default function App() {
                             <PiggyBank className="w-8 h-8 text-emerald-600" />
                             FairShare
                         </h1>
-                        <p className={`${textMutedClass} mt-1`}>
-                            {typedText}
-                            {typedText.length < fullGreeting.length && (
-                                <span className="animate-pulse">|</span>
-                            )}
+                        <p
+                            className={`${textMutedClass} mt-1 cursor-pointer hover:opacity-80 transition-opacity group flex items-center gap-1`}
+                            onClick={() => {
+                                setTempGreeting(customGreeting);
+                                setShowGreetingEditor(true);
+                            }}
+                            title="Click to edit greeting"
+                        >
+                            <span>
+                                {typedText}
+                                {typedText.length < fullGreeting.length && (
+                                    <span className="animate-pulse">|</span>
+                                )}
+                            </span>
+                            <Edit3 className="w-3 h-3 opacity-0 group-hover:opacity-50 transition-opacity" />
                         </p>
+
+                        {/* Greeting Editor Modal */}
+                        {showGreetingEditor && (
+                            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowGreetingEditor(false)}>
+                                <div
+                                    className={`${darkMode ? 'bg-slate-800' : 'bg-white'} rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl`}
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <h3 className={`text-lg font-bold ${textClass} mb-4`}>Edit Greeting</h3>
+                                    <input
+                                        type="text"
+                                        value={tempGreeting}
+                                        onChange={(e) => setTempGreeting(e.target.value)}
+                                        className={`w-full px-4 py-2 rounded-lg border ${inputBgClass} focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none mb-4`}
+                                        placeholder="Enter your custom greeting..."
+                                    />
+                                    <div className="flex gap-2 justify-end">
+                                        <Button variant="secondary" onClick={() => setShowGreetingEditor(false)} darkMode={darkMode}>
+                                            Cancel
+                                        </Button>
+                                        <Button onClick={() => {
+                                            setCustomGreeting(tempGreeting || "Hello there. Let's split those group expenses.");
+                                            setTypedText('');
+                                            setShowGreetingEditor(false);
+                                        }}>
+                                            Save
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     <div className="flex items-center gap-2 flex-wrap">
