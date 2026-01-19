@@ -66,6 +66,8 @@ export default function App() {
     const [showCurrencyPicker, setShowCurrencyPicker] = useState(false);
     const [darkMode, setDarkMode] = useState(false);
     const [showShareMenu, setShowShareMenu] = useState(false);
+    const [typedText, setTypedText] = useState('');
+    const fullGreeting = "Hello Gustavo Carita. Let's split those group expenses.";
 
     // Expense Form State
     const [payer, setPayer] = useState('');
@@ -99,6 +101,16 @@ export default function App() {
             console.error('Failed to save data:', e);
         }
     }, [participants, expenses, currency, darkMode]);
+
+    // Typewriter animation effect
+    useEffect(() => {
+        if (typedText.length < fullGreeting.length) {
+            const timeout = setTimeout(() => {
+                setTypedText(fullGreeting.slice(0, typedText.length + 1));
+            }, 50);
+            return () => clearTimeout(timeout);
+        }
+    }, [typedText, fullGreeting]);
 
     // Add a new person
     const addParticipant = (e) => {
@@ -271,7 +283,12 @@ export default function App() {
                             <PiggyBank className="w-8 h-8 text-emerald-600" />
                             FairShare
                         </h1>
-                        <p className={`${textMutedClass} mt-1 typewriter-done`}>Hello Gustavo Carita. Let's split those group expenses.</p>
+                        <p className={`${textMutedClass} mt-1`}>
+                            {typedText}
+                            {typedText.length < fullGreeting.length && (
+                                <span className="animate-pulse">|</span>
+                            )}
+                        </p>
                     </div>
 
                     <div className="flex items-center gap-2 flex-wrap">
