@@ -64,7 +64,16 @@ export default function App() {
     const [expenses, setExpenses] = useState([]);
     const [currency, setCurrency] = useState('EUR');
     const [showCurrencyPicker, setShowCurrencyPicker] = useState(false);
-    const [darkMode, setDarkMode] = useState(false);
+    const [darkMode, setDarkMode] = useState(() => {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const data = JSON.parse(saved);
+                return data.darkMode === true;
+            }
+        } catch (e) { }
+        return false;
+    });
     const [showShareMenu, setShowShareMenu] = useState(false);
     const [typedText, setTypedText] = useState('');
     const fullGreeting = "Hello Dr. Gustavo Carita. Let's split those group expenses.";
