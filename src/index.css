@@ -7,6 +7,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -16,6 +17,7 @@
   from {
     transform: translateY(1rem);
   }
+
   to {
     transform: translateY(0);
   }
@@ -34,4 +36,42 @@ html {
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typewriter animation */
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+
+  from,
+  to {
+    border-color: transparent;
+  }
+
+  50% {
+    border-color: currentColor;
+  }
+}
+
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid currentColor;
+  animation:
+    typewriter 2.5s steps(50, end) forwards,
+    blink-caret 0.75s step-end infinite;
+}
+
+.typewriter-done {
+  animation:
+    typewriter 2.5s steps(50, end) forwards,
+    blink-caret 0.75s step-end 4;
 }

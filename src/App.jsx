@@ -271,7 +271,7 @@ export default function App() {
                             <PiggyBank className="w-8 h-8 text-emerald-600" />
                             FairShare
                         </h1>
-                        <p className={`${textMutedClass} mt-1`}>Hello Dr. Gustavo. Let's split those group expenses.</p>
+                        <p className={`${textMutedClass} mt-1 typewriter-done`}>Hello Gustavo Carita. Let's split those group expenses.</p>
                     </div>
 
                     <div className="flex items-center gap-2 flex-wrap">
