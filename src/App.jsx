@@ -67,7 +67,7 @@ export default function App() {
     const [darkMode, setDarkMode] = useState(false);
     const [showShareMenu, setShowShareMenu] = useState(false);
     const [typedText, setTypedText] = useState('');
-    const fullGreeting = "Hello Gustavo Carita. Let's split those group expenses.";
+    const fullGreeting = "Hello Dr. Gustavo Carita. Let's split those group expenses.";
 
     // Expense Form State
     const [payer, setPayer] = useState('');
